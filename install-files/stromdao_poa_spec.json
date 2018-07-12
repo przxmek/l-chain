@@ -1,0 +1,44 @@
+{
+    "name": "StromDAO PoA Chain",   
+    "engine": {	
+		"authorityRound": {
+			"params": {
+			"stepDuration": "4",
+			"validators": {
+				"list": [
+				"0x0013c31077fc1b0cb73a677f3b587aaeb5e07ffb",
+				"0x0075D14a828F22584f69B2F4cDce6877D5Bcbf7c",
+				"0xd87064f2ca9bb2ec333d4a0b02011afdf39c4fb0",
+				"0xfa21fb716322ee4ebbec6aefb9208a428e0b56f4",
+                                "0x007402E0F3950493d26c39eA56BbF8D11FD68e30"
+				]
+			}}
+		}
+	},
+    "params": {
+        "maximumExtraDataSize": "0x20",
+	    "gasLimitBoundDivisor": "0x400",
+        "minGasLimit": "0x1388",
+        "networkID" : "0x3"
+    },
+    "genesis": {
+		"seal": {
+			"authorityRound": {
+				"step": "0x0",
+				"signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+			}
+		},
+        "difficulty": "0x20",
+        "gasLimit": "0xFF5B8D80",
+		"author": "0x0000000000000000000000000000000000000000",
+		"timestamp": "0x00",
+		"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+		"extraData": "0x"		
+    },
+    "accounts": {
+        "0x0000000000000000000000000000000000000001": { "balance": "1", "builtin": { "name": "ecrecover", "pricing": { "linear": { "base": 3000, "word": 0 } } } },
+        "0x0000000000000000000000000000000000000002": { "balance": "1", "builtin": { "name": "sha256", "pricing": { "linear": { "base": 60, "word": 12 } } } },
+        "0x0000000000000000000000000000000000000003": { "balance": "1", "builtin": { "name": "ripemd160", "pricing": { "linear": { "base": 600, "word": 120 } } } },
+        "0x0000000000000000000000000000000000000004": { "balance": "1", "builtin": { "name": "identity", "pricing": { "linear": { "base": 15, "word": 3 } } } }
+    }
+}
