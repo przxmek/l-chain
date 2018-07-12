@@ -1,6 +1,9 @@
 # Python virtual env
 .venv/
 
+# Intellij IDEA / PyCharm project files
+.idea/
+
 # Visual Studio code project files
 .vscode/
 
