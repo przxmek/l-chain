@@ -1,5 +1,8 @@
 # Python virtual env
 .venv/
 
+# Visual Studio code project files
+.vscode/
+
 # Install DEB packages
 install-files/*.deb
