@@ -29,7 +29,7 @@ idMap = {
     },
     'fbc8b32e-a60c-4d5e-ab04-1229803879a7': {
         'billingId': '1585',
-        'switchId': '1530',
+        'switchId': '1580',
     },
     'dfd3794d-581e-4992-bacc-7670a37bdcfe': {
         'billingId': '1585',

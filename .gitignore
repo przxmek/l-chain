@@ -1,5 +1,10 @@
+# Python cache
+*.pyc
+__pycache__/
+
 # Python virtual env
 .venv/
+.venv-windows/
 
 # Intellij IDEA / PyCharm project files
 .idea/
