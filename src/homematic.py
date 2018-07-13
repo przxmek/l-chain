@@ -4,11 +4,13 @@ import time
 
 def get_power_consumption(socket):
     socketId = socket.homematicBillingId
+    print("Homematic: getting power consumption for socket: " + socket.socketId + " homematicId: " + socketId)
     #send a request to the homematic gateway xml-api (https://github.com/hobbyquaker/XML-API)
     response_socket = requests.get('http://172.16.50.187/config/xmlapi/state.cgi?datapoint_id=' + socketId ,timeout=3)
     #parse the xml response from the homematic gateway xml-api
     root_socket = ET.fromstring(response_socket.text)
     #read the value for ENERGY_COUNTER from the XML, child.attrib['value']
+
     for child in root_socket:
         return child.attrib['value']
 

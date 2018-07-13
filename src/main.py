@@ -13,6 +13,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import nfc
 from blockchain import LBlockchain
 import homematic
+import _thread
 
 testJson = '{"uuid-device": "0xA2 0xD4 0x92 0x30", "uuid-socket" : "b53aede2-2f6a-4a11-9e02-6237301a100f"}'
 testJson2 = '{"uuid-device": "0xA2 0xD4 0x92 0x29", "uuid-socket" : "d042a319-6fd5-41d5-b9a5-4f59b56c920e"}'
@@ -102,28 +103,31 @@ sockets = []
 #print(socket.socketId)
 
 def loop():
+    print("LOOP sockets count" + str(len(sockets)))
     for socket in sockets:
+        print(str(socket))
         if (socket.getDeviceId != 0):
             print("read powerConsumption from HomeMatic")
 
             #request Homematic
-            # currentPowerConsumption = 100
-            currentPowerConsumption = homematic.get_power_consumption(socket)
+            currentPowerConsumption = float(homematic.get_power_consumption(socket))
 
             if ((currentPowerConsumption - socket.getLastBillingPower()) > billingLimit):
                 print("update blockchain")
-                #update blockchain    
+                #update blockchain
                 socket.setLastBillingPower(currentPowerConsumption)
             else:
                 print("do nothing...")
 
 
+# def nfc_thread():
+#     nfc.init_nfc(socketUpdateCallback)
 
 
 if __name__ == '__main__':
     sched = BlockingScheduler()
 
-    nfc.init_nfc(socketUpdateCallback)
+    _thread.start_new_thread(nfc.init_nfc, (socketUpdateCallback,))
 
     sched.add_job(loop, "interval", seconds=2)
     sched.start()
