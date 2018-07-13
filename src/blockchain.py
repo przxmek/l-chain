@@ -36,9 +36,11 @@ class LBlockchain:
         w3.personal.unlockAccount(self.account_addr, self.account_pwd)
 
     def updateSocket(self, socketId, deviceId):
+        self._authorize()
         return self.l.functions.socketUpdate(socketId, deviceId).transact({'from': self.account_addr})
 
     def powerDelivery(self, socketId, consumedEnergy):
+        self._authorize()
         return self.l.functions.powerDelivery(socketId, consumedEnergy).transact({'from': self.account_addr})
 
 
