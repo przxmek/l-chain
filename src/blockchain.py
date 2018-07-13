@@ -44,7 +44,14 @@ class LBlockchain:
 
 
     def isDeviceAuthorized(self, socketId):
-        return self.l.functions.isDeviceAuthorized(socketId).transact({'from': self.account_addr})
+        return self.l.functions.isDeviceAuthorized(socketId).call()
+
+    def getPriceForDevice(self, socketId):
+        return self.l.functions.getPriceForDevice(socketId).call()
+
+    def getDeviceForSocket(self, socketId):
+        return self.l.functions.getDeviceForSocket(socketId).call()
+
 
 
 
@@ -57,6 +64,10 @@ if __name__ == '__main__':
 
     # l.isDeviceAuthorized('socketId')
     # print(l.updateSocket('socket2', 'boiler').hex())
-    print(l.powerDelivery('socket2', 42).hex())
+    # print(l.powerDelivery('socket2', 42).hex())
+    # print(l.getDeviceForSocket('socket2'))
+    # print(l.getPriceForDevice('socket2'))
+    # print(l.isDeviceAuthorized('socket2'))
+
 
 
