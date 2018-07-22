@@ -39,7 +39,7 @@ light = true
 
 [account]
 # File at pwd_file should contain passwords to unlock your accounts. One password per line.
-password  = ["pwd_file"]
+password  = ["${CONF_PATH}/pwd_file"]
 
 [ui]
 #  Wallet will listen for connections on IP 0.0.0.0.
@@ -128,9 +128,9 @@ EOF
 
 update_configs
 
-echo "$SIGNER_PWD" | sudo tee ${CONF_PATH}/pwd_file > /dev/null
-
-cd ${LCHAIN_PATH}
+if [ ! -f ${CONF_PATH}/pwd_file ]; then
+	echo "$SIGNER_PWD" | sudo tee ${CONF_PATH}/pwd_file > /dev/null
+fi
 
 ENGINE_SIGNER=`sudo parity -c ${CONF_PATH}/lchain.conf account new`
 
