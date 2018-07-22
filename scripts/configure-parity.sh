@@ -9,11 +9,12 @@ ENGINE_SIGNER="0x0"
 
 sudo mkdir -p ${LCHAIN_PATH}
 sudo mkdir -p ${CONF_PATH}
-sudo chmod 777 ${LCHAIN_PATH}
 
 
 configure_lchain_user () {
-	id -u lchain || sudo adduser lchain lchain
+	id -u lchain 2>&1 > /dev/null || (sudo adduser --system --no-create-home --disabled-password --disabled-login --group lchain)
+	sudo chown -R lchain ${LCHAIN_PATH}
+	sudo chgrp -R lchain ${LCHAIN_PATH}
 }
 
 
@@ -50,7 +51,7 @@ apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc
 # port = 8182
 
 [account]
-password  = ["pwd_file"]
+password  = ["${CONF_PATH}/pwd_file"]
 
 [dapps]
 # path = "${LCHAIN_PATH}/dapps/"
@@ -116,7 +117,7 @@ echo "$SIGNER_PWD" | sudo tee ${CONF_PATH}/pwd_file > /dev/null
 
 cd ${LCHAIN_PATH}
 
-ENGINE_SIGNER=`parity -c ${CONF_PATH}/lchain.conf account --password ${CONF_PATH}/pwd_file new`
+ENGINE_SIGNER=`sudo parity -c ${CONF_PATH}/lchain.conf account new`
 
 update_configs
 
