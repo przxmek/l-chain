@@ -12,9 +12,13 @@ sudo mkdir -p ${CONF_PATH}
 sudo chmod 777 ${LCHAIN_PATH}
 
 
+configure_lchain_user () {
+	id -u lchain || sudo adduser lchain lchain
+}
+
+
 install_daemon () {
     sudo cp ${INSTALL_PATH}/install-files/lchain.service /etc/systemd/system/lchain.service
-#    sudo chmod +x /etc/systemd/system/lchain.service
 
     sudo systemctl enable lchain
     sudo systemctl start lchain
@@ -116,4 +120,5 @@ ENGINE_SIGNER=`parity -c ${CONF_PATH}/lchain.conf account --password ${CONF_PATH
 
 update_configs
 
+configure_lchain_user
 install_daemon
