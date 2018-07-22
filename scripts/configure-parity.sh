@@ -29,9 +29,23 @@ install_daemon () {
 update_configs () {
 cat <<EOF | sudo tee ${CONF_PATH}/lchain.conf > /dev/null
 [parity]
+# Lchain network
 chain = "${CONF_PATH}/lchain-poa-spec.json"
+# Blockchain and settings will be stored in ${LCHAIN_PATH}.
 base_path = "${LCHAIN_PATH}/privatechain"
 keys_path = "${LCHAIN_PATH}/keys"
+# Experimental: run in light client mode. Light clients synchronize a bare minimum of data and fetch necessary data on-demand from the network. Much lower in storage, potentially higher in bandwidth. Has no effect with subcommands.
+light = true
+
+[account]
+# File at pwd_file should contain passwords to unlock your accounts. One password per line.
+password  = ["pwd_file"]
+
+[ui]
+#  Wallet will listen for connections on IP 0.0.0.0.
+interface = "0.0.0.0" # Only for development!!!
+# List of allowed Host header values. This option will validate the Host header sent by the browser, it is additional security against some attack vectors. Special options: "all", "none",.
+hosts = ["all"] # Only for development!!!
 
 [network]
 port = 30400
@@ -44,14 +58,15 @@ port = 30400
 # reserved_peers = "lchain_peers.txt"
 
 [rpc]
-# port = 8541
+#  JSON-RPC will be listening for connections on IP 0.0.0.0.
+interface = "0.0.0.0" # Only for development!!!
+# Allows Cross-Origin Requests from domain '*'.
+cors = ["*"] # Only for development!!!
 apis = ["web3", "eth", "net", "personal", "parity", "parity_set", "traces", "rpc", "parity_accounts"]
 
-[ui]
-# port = 8182
-
-[account]
-password  = ["${CONF_PATH}/pwd_file"]
+[websockets]
+#  JSON-RPC will be listening for connections on IP 0.0.0.0.
+interface = "0.0.0.0" # Only for development!!!
 
 [dapps]
 # path = "${LCHAIN_PATH}/dapps/"
