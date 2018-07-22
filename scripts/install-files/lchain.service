@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=lchain
 Group=lchain
-ExecStart=/usr/bin/parity --config /opt/lchain/conf/lchain.conf
+ExecStart=/usr/bin/parity --config /opt/lchain/conf/lchain.conf ui
 Restart=on-failure
 KillSignal=SIGHUP
 
