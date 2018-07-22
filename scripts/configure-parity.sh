@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+INSTALL_PATH=`pwd`
 LCHAIN_PATH=/opt/lchain
 CONF_PATH=${LCHAIN_PATH}/conf
 
@@ -10,6 +10,16 @@ ENGINE_SIGNER="0x0"
 sudo mkdir -p ${LCHAIN_PATH}
 sudo mkdir -p ${CONF_PATH}
 sudo chmod 777 ${LCHAIN_PATH}
+
+
+install_daemon () {
+    sudo cp ${INSTALL_PATH}/install-files/lchain.service /etc/systemd/system/lchain.service
+#    sudo chmod +x /etc/systemd/system/lchain.service
+
+    sudo systemctl enable lchain
+    sudo systemctl start lchain
+}
+
 
 update_configs () {
 cat <<EOF | sudo tee ${CONF_PATH}/lchain.conf > /dev/null
@@ -105,3 +115,5 @@ cd ${LCHAIN_PATH}
 ENGINE_SIGNER=`parity -c ${CONF_PATH}/lchain.conf account --password ${CONF_PATH}/pwd_file new`
 
 update_configs
+
+install_daemon
