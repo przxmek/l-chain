@@ -1,0 +1,14 @@
+[Unit]
+Description=LChain Daemon
+After=network.target
+
+[Service]
+User=parity
+Group=parity
+ExecStart=/usr/bin/parity --config /opt/lchain/conf/lchain.conf
+Restart=on-failure
+KillSignal=SIGHUP
+
+[Install]
+WantedBy=default.target
+
