@@ -17,7 +17,7 @@ class LBlockchain:
     def __init__(self):
         _check_connection()
 
-        contract_address = '0x19564705797F42771146e7f8fDF877B1C4886109'
+        contract_address = '0x7a96ebe9c9e85600c3bd87827cff5bFAe253c1AE'
         contract_abi = '[{"constant":true,"inputs":[{"name":"socketId","type":"string"}],"name":"isDeviceAuthorized","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"socketId","type":"string"}],"name":"getDeviceForSocket","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"socketId","type":"string"},{"name":"deviceId","type":"string"}],"name":"socketUpdate","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"deviceId","type":"string"}],"name":"getPriceForDevice","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"socketId","type":"string"},{"name":"consumedEnergy","type":"uint256"}],"name":"powerDelivery","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"sokcetId","type":"string"},{"indexed":false,"name":"deviceId","type":"string"},{"indexed":false,"name":"consumedEnergy","type":"uint256"},{"indexed":false,"name":"pricePerUnit","type":"uint256"}],"name":"PowerDelivery","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"socketId","type":"string"},{"indexed":false,"name":"deviceId","type":"string"}],"name":"SocketUpdate","type":"event"}]'
         self.l = w3.eth.contract(
             address=contract_address,
@@ -27,13 +27,14 @@ class LBlockchain:
         # Recovery phrase: cytoplast talon roundness escargot wrath idly prewar whoops unlearned sarcasm deplete monogamy
         # self.account_addr = '0x00eB790E8A800fdF1288DBaCCC443e4578687E8F'
         # self.account_pwd = 'lbox'
-        self.account_addr = '0x0095efEDD680CDf61Ab2a60ED1D96EFc85181566'
+        self.account_addr = '0x0029E01550F56456403222350D3D396bE30002B4'
         self.account_pwd = 'test'
 
         self._authorize()
 
     def _authorize(self):
-        w3.personal.unlockAccount(self.account_addr, self.account_pwd)
+        res = w3.personal.unlockAccount(self.account_addr, self.account_pwd)
+        print('auth result: ' + str(res))
 
     def updateSocket(self, socketId, deviceId):
         self._authorize()
@@ -43,8 +44,6 @@ class LBlockchain:
         self._authorize()
         return self.l.functions.powerDelivery(socketId, consumedEnergy).transact({'from': self.account_addr})
 
-
-
     def isDeviceAuthorized(self, socketId):
         return self.l.functions.isDeviceAuthorized(socketId).call()
 
@@ -53,9 +52,6 @@ class LBlockchain:
 
     def getDeviceForSocket(self, socketId):
         return self.l.functions.getDeviceForSocket(socketId).call()
-
-
-
 
 
 if __name__ == '__main__':

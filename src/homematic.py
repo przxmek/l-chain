@@ -14,6 +14,8 @@ def get_power_consumption(socket):
     for child in root_socket:
         return child.attrib['value']
 
+    return '0.0'
+
 
 #
 # #read all four socket measurements (ELV Homematic DIN rail switch actuator with power measurement HM-ES-PMSw1-DR)

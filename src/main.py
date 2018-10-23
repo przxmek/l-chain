@@ -20,28 +20,24 @@ testJson2 = '{"uuid-device": "0xA2 0xD4 0x92 0x29", "uuid-socket" : "d042a319-6f
 
 idMap = {
     'b53aede2-2f6a-4a11-9e02-6237301a100f': {
-        'billingId': '1585',
-        'switchId': '1530',
-    },
-    'd042a319-6fd5-41d5-b9a5-4f59b56c920e': {
-        'billingId': '1585',
+        'billingId': '1472',
         'switchId': '1530',
     },
     'fbc8b32e-a60c-4d5e-ab04-1229803879a7': {
-        'billingId': '1585',
-        'switchId': '1580',
+        'billingId': '1535',
+        'switchId': '1535',
     },
     'dfd3794d-581e-4992-bacc-7670a37bdcfe': {
-        'billingId': '1585',
+        'billingId': '1635',
         'switchId': '1530',
     },
     '230b53fb-c5ed-4af4-b448-f9222d656482': {
-        'billingId': '1635',
+        'billingId': '1585',
         'switchId': '1467',
     }
 }
 
-billingLimit = 20
+billingLimit = 1
 
 #x = json.loads(testJson)
 #print(x)
@@ -64,11 +60,13 @@ class Socket:
             
     def setLastBillingPower(self, value):
         delta = value - self.lastBillingPower
+        print("setLastBillingPower() " + str(delta) + " for socketID: " + str(self.socketId))
         lblockchain.powerDelivery(self.socketId, int(delta))
         self.lastBillingPower = value
 
     def socketUpdate(self, deviceId):
-        print("socketUpdate socket:" + str(self.socketId) + " device: " + str(deviceId))
+        print("socketUpdate() socket: " + str(self.socketId) + " device: " + str(deviceId))
+        self.deviceId = deviceId
         lblockchain.updateSocket(self.socketId, deviceId)
 
     def getLastBillingPower(self):
@@ -83,8 +81,10 @@ def socketUpdateCallback(nfcJson):
     deviceId = nfcJson['uid_device']
 
     # Skipping disconnected sockets
-    if deviceId == '0x01 0x00 0x00 0x00 0x00 0x00 0x00':
-        return
+    #if deviceId == '0x01 0x00 0x00 0x00 0x00 0x00 0x00':
+    #    return
+    #if deviceId == '0':
+    #     return
 
     for socket in sockets:
         if socket.socketId == socketId:
@@ -103,10 +103,10 @@ sockets = []
 #print(socket.socketId)
 
 def loop():
-    print("LOOP sockets count" + str(len(sockets)))
+    print("LOOP sockets count: " + str(len(sockets)))
     for socket in sockets:
-        print(str(socket))
-        if (socket.getDeviceId != 0):
+        if (socket.getDeviceId() != '0'):
+            print("Device ID: " + str(socket.getDeviceId()))
             print("read powerConsumption from HomeMatic")
 
             #request Homematic
