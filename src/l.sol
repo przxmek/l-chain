@@ -3,12 +3,12 @@ pragma solidity ^0.4.24;
 contract L {
     address public owner;
 
-    mapping(string => string) socketToDevices;
+    mapping(address => address) socketToDevices;
 
-    mapping(string => uint) prices;
+    mapping(address => uint) prices;
 
-    event PowerDelivery(address indexed from, string sokcetId, string deviceId, uint consumedEnergy, uint pricePerUnit);
-    event SocketUpdate(address indexed from, string socketId, string deviceId);
+    event PowerDelivery(address indexed from, address sokcetId, address deviceId, uint consumedEnergy, uint pricePerUnit);
+    event SocketUpdate(address indexed from, address socketId, address deviceId);
 
     constructor() public {
         owner = msg.sender;
@@ -17,28 +17,28 @@ contract L {
 
     // Private methods
 
-    function isNotEmptyString(string str) internal pure returns (bool) {
-        return (bytes(str).length != 0);
+    function isNotNullAddress(address addr) internal pure returns (bool) {
+        return !(addr == address(0));
     }
 
 
     // Public const (view) methods
 
-    function getPriceForDevice(string deviceId) public view returns (uint) {
+    function getPriceForDevice(address deviceId) public view returns (uint) {
         uint saved_price = prices[deviceId];
         return saved_price;
     }
 
-    function getDeviceForSocket(string socketId) public view returns (string) {
-        require(isNotEmptyString(socketId));
+    function getDeviceForSocket(address socketId) public view returns (address) {
+        require(isNotNullAddress(socketId));
         return socketToDevices[socketId];
     }
 
     // Checks if a device plugged in a given socket is authorized to use it.
-    function isDeviceAuthorized(string socketId) public view returns (bool) {
+    function isDeviceAuthorized(address socketId) public view returns (bool) {
         // Get device ID
-        string storage deviceId = socketToDevices[socketId];
-        require(isNotEmptyString(deviceId), "No device plugged to socket");
+        address deviceId = socketToDevices[socketId];
+        require(isNotNullAddress(deviceId), "No device plugged to socket");
 
         // Check if device is allowed for this socket
         // require(allowedDevices[socketId].contains(deviceId));
@@ -49,15 +49,15 @@ contract L {
 
     // Public functions (transactions)
 
-    function socketUpdate(string socketId, string deviceId) public returns (bool)  {
+    function socketUpdate(address socketId, address deviceId) public returns (bool)  {
         socketToDevices[socketId] = deviceId;
         emit SocketUpdate(msg.sender, socketId, deviceId);
         return true;
     }
 
-    function powerDelivery(string socketId, uint consumedEnergy) public {
+    function powerDelivery(address socketId, uint consumedEnergy) public {
         // Check if socketId is not empty
-        require(isNotEmptyString(socketId));
+        require(isNotNullAddress(socketId));
 
         // TODO check if msg.sender (L-BOX) is a registered L-BOX
 
@@ -65,7 +65,7 @@ contract L {
         require(isDeviceAuthorized(socketId), "Unauthorized device plugged to socket");
 
         // Get device ID
-        string storage deviceId = socketToDevices[socketId];
+        address deviceId = socketToDevices[socketId];
 
         // Get private for electricity
         uint price = getPriceForDevice(deviceId);
