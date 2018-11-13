@@ -5,6 +5,8 @@ __pycache__/
 # Python virtual env
 .venv/
 .venv-windows/
+.venv35/
+.venv36/
 
 # Intellij IDEA / PyCharm project files
 .idea/

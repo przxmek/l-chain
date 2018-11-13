@@ -13,6 +13,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import nfc
 from blockchain import LBlockchain
 import homematic
+from gsi import run_gsi
 import _thread
 
 testJson = '{"uuid-device": "0xA2 0xD4 0x92 0x30", "uuid-socket" : "b53aede2-2f6a-4a11-9e02-6237301a100f"}'
@@ -128,6 +129,7 @@ if __name__ == '__main__':
     sched = BlockingScheduler()
 
     _thread.start_new_thread(nfc.init_nfc, (socketUpdateCallback,))
+    _thread.start_new_thread(run_gsi, ())
 
     sched.add_job(loop, "interval", seconds=2)
     sched.start()
